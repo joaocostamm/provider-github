@@ -46,6 +46,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           ghr: true
+          changelog-file: changelog.md
+          changelog-generator-opt: "emojis=true"
       - run: |
           gox -parallel 4 -osarch="linux/amd64 darwin/amd64 linux/arm windows/amd64" -ldflags="-extldflags '-static' -s -w -X github.com/go-semantic-release/provider-github/pkg/provider.PVERSION=${{steps.semrel.outputs.version}}" -output="bin/{{.Dir}}_v${{steps.semrel.outputs.version}}_{{.OS}}_{{.Arch}}" ./cmd/provider-github/
           cd bin/ && shasum -a 256 * > ./provider-github_v${{steps.semrel.outputs.version}}_checksums.txt && cd -
